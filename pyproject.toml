@@ -1,0 +1,10 @@
+[project]
+name = "dsci-522-group-16-spam-email-classifier"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "altair>=6.3.0",
+    "jupyter>=1.1.1",
+    "pandas>=3.1.1",
+    "scikit-learn>=1.9.1",
+]
