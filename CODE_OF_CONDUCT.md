@@ -84,7 +84,7 @@ Leaders and maintainers must disclose and manage conflicts arising from employme
 
 ## Reporting and enforcement
 
-Instances of abusive, harassing, discriminatory, or otherwise unacceptable behavior may be reported by contacting the project team at audreyt2@student.ubc.ca. Reports may also instead be sent privately to a current project maintainer.
+Instances of abusive, harassing, discriminatory, or otherwise unacceptable behavior may be reported by contacting the project team at audreyt2@student.ubc.ca. Reports may also instead be sent privately to a current project maintainer or the UBC-MDS program.
 
 Reports should include, where possible:
 
