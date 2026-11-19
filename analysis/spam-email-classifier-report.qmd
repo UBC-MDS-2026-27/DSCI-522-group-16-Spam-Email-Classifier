@@ -35,6 +35,24 @@ We answer this question using the **Spambase** dataset from the UCI Machine Lear
 
 The **target (response) variable** is `spam`, a binary indicator denoting whether an email is unsolicited commercial email (`1` = spam, `0` = non-spam). Because every email pairs these 57 lexical features with a labeled binary outcome, this dataset directly supports our classification question.
 
+## Load Data
+```{python}
+from ucimlrepo import fetch_ucirepo 
+  
+# fetch dataset 
+spambase = fetch_ucirepo(id=94) 
+  
+# data (as pandas dataframes) 
+X = spambase.data.features 
+y = spambase.data.targets 
+  
+# metadata 
+print(spambase.metadata) 
+  
+# variable information 
+print(spambase.variables) 
+```
+
 ## References
 
 Hopkins, M., Reeber, E., Forman, G., & Suermondt, J. (1999). *Spambase* [Dataset]. UCI Machine Learning Repository. <https://doi.org/10.24432/C53G6X>
