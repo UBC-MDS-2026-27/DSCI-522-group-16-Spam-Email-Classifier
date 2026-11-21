@@ -3,15 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Ethan Liang"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - href: about.qmd
-        text: About
-      - href: blog.qmd
-        text: Blog
+  title: "Spam Email Classifier Report"
 
 format:
   html:
