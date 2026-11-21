@@ -96,6 +96,27 @@ print(f"Total emails: {len(y_train)} | Features: {X_train.shape[1]} | Missing va
 display(class_summary)
 ```
 
+@fig-eda shows how often some words/characters appear in spam and non-spam in training emails.
+
+```{python}
+#| label: fig-eda
+#| fig-cap: "Mean frequency of some words/characters in spam and non-spam training emails"
+train_df = X_train.assign(spam=y_train)
+features = ["char_freq_$", "char_freq_!", "word_freq_free",
+            "word_freq_remove", "word_freq_your", "word_freq_hp"]
+
+means = train_df.groupby("spam")[features].mean().T
+means.columns = ["Non-spam", "Spam"]
+means.index = ['"$"', '"!"', '"free"', '"remove"', '"your"', '"hp"']
+
+ax = means.plot.bar(rot=0, color=["blue", "red"], figsize=(8, 4))
+ax.set_xlabel("Word or character")
+ax.set_ylabel("Mean frequency in email (%)")
+ax.legend(title="Email class")
+plt.tight_layout()
+plt.show()
+```
+
 ## Model Training and Evaluation
 
 We split the dataset into an 80% stratified training set and a 20% stratified test set (random_state=522). Because the 57 predictors span different scales—percentages versus capitalization run lengths—we standardize features with StandardScaler inside a scikit-learn Pipeline paired with LogisticRegression.
