@@ -35,23 +35,168 @@ We answer this question using the **Spambase** dataset from the UCI Machine Lear
 
 The **target (response) variable** is `spam`, a binary indicator denoting whether an email is unsolicited commercial email (`1` = spam, `0` = non-spam). Because every email pairs these 57 lexical features with a labeled binary outcome, this dataset directly supports our classification question.
 
-## Load Data
+## Load and Explore Data
+
 ```{python}
-from ucimlrepo import fetch_ucirepo 
-  
-# fetch dataset 
-spambase = fetch_ucirepo(id=94) 
-  
-# data (as pandas dataframes) 
-X = spambase.data.features 
-y = spambase.data.targets 
-  
-# metadata 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from ucimlrepo import fetch_ucirepo
+
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_validate
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+    RocCurveDisplay,
+    classification_report,
+)
+
+RANDOM_STATE = 522
+
+# Fetch dataset
+spambase = fetch_ucirepo(id=94)
+X = spambase.data.features.copy()
+y = spambase.data.targets.iloc[:, 0].astype(int).copy()
+
+# Show metadata 
 print(spambase.metadata) 
   
-# variable information 
+# Show variable information 
 print(spambase.variables) 
+
+# Class balance summary
+label_map = {0: "Non-Spam (0)", 1: "Spam (1)"}
+
+counts = y.value_counts().sort_index().rename(index=label_map)
+props = y.value_counts(normalize=True).sort_index().rename(index=label_map).round(4)
+
+class_summary = pd.DataFrame({
+    "Count": counts,
+    "Proportion": props,
+})
+
+print(f"Total emails: {len(y)} | Features: {X.shape[1]} | Missing values: {X.isna().sum().sum()}")
+display(class_summary)
 ```
+
+## Model Training and Evaluation
+
+We split the dataset into an 80% stratified training set and a 20% stratified test set (random_state=522). Because the 57 predictors span different scales—percentages versus capitalization run lengths—we standardize features with StandardScaler inside a scikit-learn Pipeline paired with LogisticRegression.
+
+```{python}
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.20, stratify=y, random_state=RANDOM_STATE
+)
+
+clf = Pipeline([
+    ("scaler", StandardScaler()),
+    ("logreg", LogisticRegression(max_iter=1000, random_state=RANDOM_STATE)),
+])
+
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+cv_scores = cross_validate(
+    clf,
+    X_train,
+    y_train,
+    cv=cv,
+    scoring=["accuracy", "precision", "recall", "f1", "roc_auc"],
+)
+
+cv_table = pd.DataFrame({
+    metric.replace("test_", "").upper(): [scores.mean(), scores.std()]
+    for metric, scores in cv_scores.items()
+    if metric.startswith("test_")
+}, index=["5-Fold CV Mean", "5-Fold CV SD"]).T.round(4)
+
+display(cv_table)
+
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+y_prob = clf.predict_proba(X_test)[:, 1]
+
+test_table = pd.DataFrame({
+    "Metric": ["Accuracy", "Precision", "Recall", "F1-Score", "ROC-AUC"],
+    "Test Score": [
+        accuracy_score(y_test, y_pred),
+        precision_score(y_test, y_pred),
+        recall_score(y_test, y_pred),
+        f1_score(y_test, y_pred),
+        roc_auc_score(y_test, y_prob),
+    ],
+}).round(4)
+
+display(test_table)
+print(classification_report(y_test, y_pred, target_names=["Non-Spam (0)", "Spam (1)"], digits=4))
+```
+
+## Results
+
+On the held-out test set, the standardized logistic regression model separates spam (1) from non-spam (0) across varying probability thresholds. The confusion matrix details true positives and true negatives alongside false positives (legitimate emails mistakenly flagged as spam) and false negatives (spam messages reaching the inbox), illustrating the trade-off between blocking important messages and allowing unwanted or risky mail through. Complementing this fixed-threshold view, the ROC curve plots true positive rate against false positive rate across all cutoffs relative to the diagonal chance baseline (AUC = 0.50), capturing how well the 57 lexical and capitalization features rank spam above non-spam emails overall.
+
+```{python}
+fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.2))
+
+cm = confusion_matrix(y_test, y_pred)
+ConfusionMatrixDisplay(cm, display_labels=["Non-Spam (0)", "Spam (1)"]).plot(
+    ax=axes[0], cmap="Blues", colorbar=False
+)
+axes[0].set_title("Test Set Confusion Matrix")
+
+RocCurveDisplay.from_predictions(y_test, y_prob, ax=axes[1], name="Logistic Regression")
+axes[1].plot([0, 1], [0, 1], linestyle="--", color="gray", label="Chance (AUC = 0.50)")
+axes[1].set_title("Test Set ROC Curve")
+axes[1].legend(loc="lower right")
+
+plt.tight_layout()
+plt.show()
+```
+Standardized logistic regression coefficients represent the change in log-odds of an email being classified as spam per 1 standard deviation increase in each feature.
+
+```{python}
+coefs = clf.named_steps["logreg"].coef_[0]
+coef_df = pd.DataFrame({
+    "feature": X.columns,
+    "coefficient": coefs,
+    "odds_ratio_1sd": np.exp(coefs),
+    "abs_coef": np.abs(coefs),
+})
+
+top_spam = coef_df.sort_values("coefficient", ascending=False).head(8)
+top_ham = coef_df.sort_values("coefficient", ascending=True).head(8)
+top_15 = coef_df.sort_values("abs_coef", ascending=False).head(15)
+
+print("Top 8 Spam-Increasing Features:")
+display(top_spam[["feature", "coefficient", "odds_ratio_1sd"]].round(4))
+
+print("Top 8 Non-Spam (Ham)-Favoring Features:")
+display(top_ham[["feature", "coefficient", "odds_ratio_1sd"]].round(4))
+
+fig, ax = plt.subplots(figsize=(8.5, 5.2))
+plot_df = top_15.iloc[::-1]
+colors = ["#c0392b" if c > 0 else "#2980b9" for c in plot_df["coefficient"]]
+ax.barh(plot_df["feature"], plot_df["coefficient"], color=colors)
+ax.axvline(0, color="black", linewidth=0.8)
+ax.set_xlabel("Standardized Coefficient (Log-Odds per 1 SD)")
+ax.set_title("Top 15 Strongest Predictors by Magnitude")
+plt.tight_layout()
+plt.show()
+```
+
+## Limitations
+
+1. 1999 temporal snapshot: Modern spam frequently relies on URLs, image-only messages, spoofing, and evolving vocabulary rather than late-1990s bulk-email keywords.
+
+2. Corporate source bias: Non-spam examples come heavily from Hewlett-Packard Labs inboxes, meaning corpus-specific terms (hp, george) reflect that specific environment rather than general user mail.
+
+3. Decision threshold trade-off: Lowering the probability threshold from 0.50 increases recall (catching more spam) at the cost of higher false positives (flagging legitimate messages), whereas raising it protects legitimate mail at the expense of letting more spam through.
 
 ## References
 
