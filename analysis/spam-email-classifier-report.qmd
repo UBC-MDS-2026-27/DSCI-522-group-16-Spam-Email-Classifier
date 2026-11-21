@@ -42,6 +42,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from ucimlrepo import fetch_ucirepo
+from pathlib import Path 
 
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_validate
 from sklearn.preprocessing import StandardScaler
@@ -65,6 +66,10 @@ RANDOM_STATE = 522
 spambase = fetch_ucirepo(id=94)
 X = spambase.data.features.copy()
 y = spambase.data.targets.iloc[:, 0].astype(int).copy()
+
+#Save a raw copy of the data 
+Path("../data/raw").mkdir(parents=True, exist_ok=True)
+pd.concat([X, y], axis=1).to_csv("../data/raw/spambase.csv", index=False)
 
 # Show metadata 
 print(spambase.metadata) 
