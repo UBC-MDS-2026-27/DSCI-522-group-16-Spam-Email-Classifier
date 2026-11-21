@@ -71,6 +71,11 @@ y = spambase.data.targets.iloc[:, 0].astype(int).copy()
 Path("../data/raw").mkdir(parents=True, exist_ok=True)
 pd.concat([X, y], axis=1).to_csv("../data/raw/spambase.csv", index=False)
 
+# Rename the target column to "spam" and save the processed data
+Path("../data/processed").mkdir(parents=True, exist_ok=True)
+y = y.rename("spam")
+pd.concat([X, y], axis=1).to_csv("../data/processed/spambase_clean.csv", index=False)
+
 # Show metadata 
 print(spambase.metadata) 
   
