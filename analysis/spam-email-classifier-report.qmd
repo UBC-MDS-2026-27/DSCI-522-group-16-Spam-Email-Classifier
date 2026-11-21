@@ -96,6 +96,8 @@ print(f"Total emails: {len(y_train)} | Features: {X_train.shape[1]} | Missing va
 display(class_summary)
 ```
 
+**Table 1** Number and proportion of spam and non-spam emails in the training set. 
+
 @fig-eda shows how often some words/characters appear in spam and non-spam in training emails.
 
 ```{python}
@@ -162,8 +164,11 @@ test_table = pd.DataFrame({
 }).round(4)
 
 display(test_table)
-print(classification_report(y_test, y_pred, target_names=["Non-Spam (0)", "Spam (1)"], digits=4))
 ```
+
+**Table 2** Mean and standard deviation of 5 fold cross validation scores on the training set. 
+
+**Table 3** Model performance on the held aside test set. 
 
 ## Results
 
@@ -187,6 +192,8 @@ plt.tight_layout()
 plt.show()
 ```
 Standardized logistic regression coefficients represent the change in log-odds of an email being classified as spam per 1 standard deviation increase in each feature.
+
+**Figure 2** Confusion matrix and ROC curve for the logistic regression model on the test set. 
 
 ```{python}
 coefs = clf.named_steps["logreg"].coef_[0]
@@ -217,6 +224,12 @@ ax.set_title("Top 15 Strongest Predictors by Magnitude")
 plt.tight_layout()
 plt.show()
 ```
+
+**Table 4** The top 8 features associated with spam emails. 
+
+**Table 5** The top 8 features associated with non-spam emails. 
+
+**Figure 3** The top 15 strongest predictors by coefficient size. 
 
 ## Limitations
 
