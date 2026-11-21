@@ -33,7 +33,7 @@ We answer this question using the **Spambase** dataset from the UCI Machine Lear
 - **Character frequencies (6 variables):** Percentage of characters matching `;`, `(`, `[`, `!`, `$`, and `#`.
 - **Capitalization patterns (3 variables):** Average length, longest length, and total count of uninterrupted capital-letter sequences.
 
-The **target (response) variable** is `spam`, a binary indicator denoting whether an email is unsolicited commercial email (`1` = spam, `0` = non-spam). Because every email pairs these 57 lexical features with a labeled binary outcome, this dataset directly supports our classification question.
+The **target (response) variable** is spam, a binary indicator denoting whether an email is unsolicited commercial email (1 = spam, 0 = non-spam). Because every email pairs these 57 lexical features with a labeled binary outcome, this dataset directly supports our classification question.
 
 ## Load and Explore Data
 
@@ -98,7 +98,9 @@ display(class_summary)
 
 **Table 1** Number and proportion of spam and non-spam emails in the training set. 
 
-@fig-eda shows how often some words/characters appear in spam and non-spam in training emails.
+Table 1 shows that the training set has the same class imbalance as the full dataset (39% spam).
+
+@fig-eda shows how often some words/characters appear in spam and non-spam training emails.
 
 ```{python}
 #| label: fig-eda
@@ -121,7 +123,7 @@ plt.show()
 
 ## Model Training and Evaluation
 
-We split the dataset into an 80% stratified training set and a 20% stratified test set (random_state=522). Because the 57 predictors span different scales—percentages versus capitalization run lengths—we standardize features with StandardScaler inside a scikit-learn Pipeline paired with LogisticRegression.
+We split the dataset into an 80% stratified training set and a 20% stratified test set. Because the 57 predictors span different scales—percentages versus capitalization run lengths — we standardize the features inside a scikit-learn pipeline paired with logistic regression (Pedregosa et al., 2011). We use logistic regression because this is a binary classification problem and its coefficients are interpretable. The metrics we use are accuracy, precision, recall, F1, and ROC AUC. The classes are imbalanced (39% spam) so accuracy alone is not reliable. Precision is highly useful because, in a real world sense, flagging non-spam emails as spam could have consequences. F1 balances precision and recall so it is useful for a holistic evaluation of the model. 
 
 ```{python}
 
@@ -191,9 +193,10 @@ axes[1].legend(loc="lower right")
 plt.tight_layout()
 plt.show()
 ```
-Standardized logistic regression coefficients represent the change in log-odds of an email being classified as spam per 1 standard deviation increase in each feature.
 
 **Figure 2** Confusion matrix and ROC curve for the logistic regression model on the test set. 
+
+Standardized logistic regression coefficients represent the change in log-odds of an email being classified as spam per 1 standard deviation increase in each feature (Table 4, Table 5, and Figure 3).
 
 ```{python}
 coefs = clf.named_steps["logreg"].coef_[0]
@@ -231,7 +234,13 @@ plt.show()
 
 **Figure 3** The top 15 strongest predictors by coefficient size. 
 
-## Limitations
+## Discussion
+
+The model performed well on the test set with a 92.7% accuracy. Precision was 0.925, recall was 0.887, and its F1 score was 0.906 (Table 3). The model's validation score (measured by the mean accuracy across 5 cross validation folds) is 91.9% (Table 2) - this is very similar to the test accuracy. This suggests that the model is not overfitting and generalizes well to unseen data. Ultimately, our question was: can we accurately classify an email as spam or non-spam using its word frequencies, special character frequencies, and capitalization patterns? Our results suggest that the answer to our question is yes. 
+
+As per Figure 2, our model flagged 26 out of 558 legitimate emails wrongly as spam whilst 41 of 363 spam emails went unflagged. These numbers suggest that 4.7% of non-spam emails will not be in the recipient's inbox and the recipient will see 11.3% of spam emails in their inbox. False positives occur less than false negatives (26 vs 41). This is relevant because, in the real world, it is more important for non-spam, potentially priority emails to be seen by the recipient than not seeing spam emails. Our test error of 7.3% matches closely with the UCI dataset page's stated error of approximately 7% (Hopkins et al., 1999), which is what we expected going into this. One interesting note from our results is that the strongest non-spam predictors were the words "george", "hp", and "meeting" (Table 5) - these words come from Hewlett-Packard Labs inboxes so they are unique non-spam indicators for these data points rather than useful general features. 
+
+### Limitations
 
 1. 1999 temporal snapshot: Modern spam frequently relies on URLs, image-only messages, spoofing, and evolving vocabulary rather than late-1990s bulk-email keywords.
 
@@ -239,6 +248,20 @@ plt.show()
 
 3. Decision threshold trade-off: Lowering the probability threshold from 0.50 increases recall (catching more spam) at the cost of higher false positives (flagging legitimate messages), whereas raising it protects legitimate mail at the expense of letting more spam through.
 
+### Impact 
+
+Spam has a meaningful impact on recipients. It was estimated that spam emails cost American firms and consumers nearly 20 billion USD a year (Rao & Reiley, 2012). Using simple features, our model was able to flag 88.7% of spam emails (0.887 recall). This shows that even a basic model that uses single word/character features could be very useful in reducing human interaction with spam and, thus, the cost associated with it. 
+
+### Future Iterations 
+
+It would be useful to remove the Hewlett-Packard Labs specific words such as "george" and "hp" to see whether the model still performs on more generic, less "biased" data. Additionally, adjusting the 0.5 probability cutoff may reduce the false positives so that would be a good avenue to investigate. Other models and newer data would be a natural next step. Models such as Naive Bayes or random forests (Dada et al., 2019) may perform better on more recent email data. 
+
 ## References
 
+Dada, E. G., Bassi, J. S., Chiroma, H., Abdulhamid, S. M., Adetunmbi, A. O., & Ajibuwa, O. E. (2019). Machine learning for email spam filtering: Review, approaches and open research problems. *Heliyon, 5*(6), e01802. <https://doi.org/10.1016/j.heliyon.2019.e01802>
+
 Hopkins, M., Reeber, E., Forman, G., & Suermondt, J. (1999). *Spambase* [Dataset]. UCI Machine Learning Repository. <https://doi.org/10.24432/C53G6X>
+
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., et al. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research, 12*, 2825–2830.
+
+Rao, J. M., & Reiley, D. H. (2012). The economics of spam. *Journal of Economic Perspectives, 26*(3), 87–110. <https://doi.org/10.1257/jep.26.3.87>
