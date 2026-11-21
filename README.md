@@ -4,7 +4,7 @@
 Audrey Tsung, Ethan Liang, Karn Nijjar
 
 ## Summary 
-TBD
+This report investigates whether an email can be accurately classified as spam or non-spam using pre-extracted word frequencies, special character frequencies, and capitalization patterns. Using the UCI Spambase dataset of 4,601 emails, we trained a logistic regression classifier and found that the model's test accuracy was 92.7% (F1 score of 0.906). Dollar signs, large strings of capitalized characters, and words like "free" and "remove" emerged as the strongest predictors of spam. Automated spam detection is critical because unsolicited email drains productivity and drives phishing and fraud, while overly aggressive filters risk blocking important legitimate messages. The main limitations are that the data was collected in 1999—meaning modern spam tactics have evolved—and that the non-spam emails come primarily from a single corporate environment (Hewlett-Packard Labs), limiting generalizability to broader, contemporary inboxes.
 
 ## How To Run The Analysis 
 1. Install the following (if not already installed):
@@ -31,7 +31,7 @@ TBD
     uv run quarto render analysis/spam-email-classifier-report.qmd
     ```
 
-5. Open the analysis/spam-email-classifier-report.html via browser 
+5. Open the docs/analysis/spam-email-classifier-report.html via browser 
 
 ## Dependencies 
    - [uv](https://docs.astral.sh/uv/)
@@ -39,10 +39,24 @@ TBD
    - Python packages are in [`pyproject.toml`](pyproject.toml)
 
 ## Licenses
-TBD 
+The code is licensed under the MIT License, and the report is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0). See [LICENSE.md](LICENSE.md) for details.
 
 ## AI Usage Statement 
-TBD 
+Our team used generative AI (Claude) as an assistant during this project. All AI-assisted output was edited and verified by team members. All issues, pull requests, and code reviews were initiated and completed by team members. 
+
+We used AI to:
+- plan the order of work 
+- check the report against the rubric 
+- receive feedback on the work 
+- suggest and troubleshoot code 
+- explore potential references (each suggestion verified by a team member)
+
+Example prompts:
+- "What is a logical structure to follow?"
+- "Does this paragraph cover the rubric points?"
+- "What plot details would most effectively convey the information in the analysis?"
+
+No AI instruction files were used. 
 
 ## Link to Report 
-TBD
+The rendered report is available at: [Spam Email Classifier Report](https://ubc-mds-2026-27.github.io/DSCI-522-group-16-Spam-Email-Classifier/analysis/spam-email-classifier-report.html)
