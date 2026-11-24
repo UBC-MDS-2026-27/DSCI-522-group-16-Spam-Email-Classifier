@@ -7,7 +7,7 @@ services:
     # CHANGE THIS LINE once: your Docker Hub username / your GitHub repository's
     # name in lowercase, with the sha- tag your workflow pushed (not latest).
     # After that, the workflow updates the tag for you.
-    image: karn141/dsci-522-group-16-spam-email-classifier:sha-d0a18be
+    image: karn141/dsci-522-group-16-spam-email-classifier:sha-3f1e37c
     ports:
       # 2222 on your computer, 22 (ssh) in the container
       - "2222:22"
