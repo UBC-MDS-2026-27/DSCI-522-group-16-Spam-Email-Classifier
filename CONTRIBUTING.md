@@ -1,6 +1,6 @@
 # Contributing to Spam Email Classifier
 
-Thank you for your interest in contributing to the **Spam Email Classifier** project (`DSCI-522-group-16-Spam-Email-Classifier`)! Whether you are fixing a typo, reporting a bug, improving our model evaluation pipeline, or proposing a new feature, we welcome contributions from everyone outside and inside the core team.
+Thank you for your interest in contributing to the **Spam Email Classifier** project (`DSCI-522-group-16-Spam-Email-Classifier`)! This document outlines how to propose a change.
 
 Please take a moment to review this document to make the contribution process smooth and effective for everyone.
 
@@ -14,17 +14,20 @@ This project adheres to a Code of Conduct to ensure a welcoming and inclusive en
 
 ## How Can I Contribute?
 
-### Reporting Bugs
+### Fixing Typos
+Small typos or grammatical errors in documentation may be edited directly using the GitHub web interface, so long as the changes are made in the *source* file. 
 
-If you encounter an error, unexpected behavior, or reproducibility issue in our data processing scripts, model training, or final report:
+- YES: you can edit the Quarto source file `analysis/spam-email-classifier-report.qmd`.
+- NO: you edit the rendered `.html` file.
 
-1. **Check existing issues:** Search the [GitHub Issues](https://github.com/UBC-MDS-2026-27/DSCI-522-group-16-Spam-Email-Classifier/issues) page first to see if the bug has already been reported.
-2. **Open a new issue:** If not, click **New Issue** and provide a clear, descriptive title.
-3. **Include details:** Help us reproduce the bug by including:
+### Prerequisites
+Before you make a substantial pull request, you should always file an issue and make sure someone from the team agrees that it is a problem. If you have found a bug, create an associated issue and include:  
    - A clear description of what happened versus what you expected to happen.
-   - Steps to reproduce the issue (including the exact commands or scripts run).
+   - The exact commands you ran to reproduce it. 
    - Error messages and full stack traces (if applicable).
-   - Your environment details (e.g., operating system, Python/R version, or Docker/Conda environment status).
+   - Your operating system and whether the problem happens inside the container.
+
+For major changes (such as switching classifiers or altering the data pipeline), wait for feedback from the team before writing extensive code. 
 
 ### Suggesting Enhancements or Changes
 
