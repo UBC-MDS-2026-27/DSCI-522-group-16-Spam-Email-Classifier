@@ -54,12 +54,19 @@ The rendered report is saved as `analysis/spam-email-classifier-report.html`. Op
  
 The command above uses `--rm`, so the container is removed automatically when the render finishes. There is nothing to stop.
  
-If you instead start the container in the background with `docker compose up -d` (for example, to work in it with Positron; see [CONTRIBUTING.md](CONTRIBUTING.md)), stop and remove it when you are done with:
+If you instead start the container in the background with `docker compose up -d`, stop and remove it when you are done with:
  
 ```
 docker compose down
 ```
 
+## Want to change the project?
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to work in the container, add or update packages, and publish the report.
+ 
+## Dependencies
+- [Docker](https://www.docker.com/) (runs the container)
+- [Git](https://git-scm.com/)
+- Everything else (Python 3.14, [uv](https://docs.astral.sh/uv/), [Quarto](https://quarto.org/), and the Python packages listed in [`pyproject.toml`](pyproject.toml) and locked in `uv.lock`) is already inside the container image.
 
 ## Licenses
 The code is licensed under the MIT License, and the report is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0). See [LICENSE.md](LICENSE.md) for details.
