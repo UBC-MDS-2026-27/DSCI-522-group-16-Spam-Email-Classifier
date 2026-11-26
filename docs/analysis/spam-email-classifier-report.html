@@ -4093,7 +4093,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="load-and-explore-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-explore-data">Load and Explore Data</h2>
-<div id="9c50abe3" class="cell" data-execution_count="1">
+<div id="05dbfc4b" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stdout">
 <pre><code>Total emails: 3680 | Features: 57 | Missing values: 0</code></pre>
 </div>
@@ -4152,7 +4152,7 @@ Figure 1: Mean frequency of some words/characters in spam and non-spam training
 <section id="model-training-and-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-training-and-evaluation">Model Training and Evaluation</h2>
 <p>We split the dataset into an 80% stratified training set and a 20% stratified test set. Because the 57 predictors span different scales—percentages versus capitalization run lengths — we standardize the features inside a scikit-learn pipeline paired with logistic regression (Pedregosa et al., 2011). We use logistic regression because this is a binary classification problem and its coefficients are interpretable. The metrics we use are accuracy, precision, recall, F1, and ROC AUC. The classes are imbalanced (39% spam) so accuracy alone is not reliable. Precision is highly useful because, in a real world sense, flagging non-spam emails as spam could have consequences. F1 balances precision and recall so it is useful for a holistic evaluation of the model.</p>
-<div id="4a844fde" class="cell" data-execution_count="3">
+<div id="5a3c7950" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 
@@ -4246,7 +4246,7 @@ Figure 1: Mean frequency of some words/characters in spam and non-spam training
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <p>On the held-out test set, the standardized logistic regression model separates spam (1) from non-spam (0) across varying probability thresholds. The confusion matrix details true positives and true negatives alongside false positives (legitimate emails mistakenly flagged as spam) and false negatives (spam messages reaching the inbox), illustrating the trade-off between blocking important messages and allowing unwanted or risky mail through. Complementing this fixed-threshold view, the ROC curve plots true positive rate against false positive rate across all cutoffs relative to the diagonal chance baseline (AUC = 0.50), capturing how well the 57 lexical and capitalization features rank spam above non-spam emails overall.</p>
-<div id="11b9c94e" class="cell" data-execution_count="4">
+<div id="83603e6f" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4257,7 +4257,7 @@ Figure 1: Mean frequency of some words/characters in spam and non-spam training
 </div>
 <p><strong>Figure 2</strong> Confusion matrix and ROC curve for the logistic regression model on the test set.</p>
 <p>Standardized logistic regression coefficients represent the change in log-odds of an email being classified as spam per 1 standard deviation increase in each feature (Table 4, Table 5, and Figure 3).</p>
-<div id="1d3affac" class="cell" data-execution_count="5">
+<div id="9d322533" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>Top 8 Spam-Increasing Features:</code></pre>
 </div>
