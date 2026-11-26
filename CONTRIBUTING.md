@@ -4,14 +4,6 @@ Thank you for your interest in contributing to the **Spam Email Classifier** pro
 
 Please take a moment to review this document to make the contribution process smooth and effective for everyone.
 
----
-
-## Code of Conduct
-
-This project adheres to a Code of Conduct to ensure a welcoming and inclusive environment for all contributors. By participating, you are expected to uphold this code. Please see our [CODE_OF_CONDUCT.md](https://github.com/UBC-MDS-2026-27/DSCI-522-group-16-Spam-Email-Classifier/blob/main/CODE_OF_CONDUCT.md) for full details and reporting procedures.
-
----
-
 ## How Can I Contribute?
 
 ### Fixing Typos
@@ -140,17 +132,19 @@ We follow a standard GitHub workflow.
 
 We recognize that generative AI tools (such as ChatGPT, GitHub Copilot, and Claude) can be helpful aids during software development and data analysis. However, to maintain code quality, reproducibility, and academic/course integrity, all contributors must follow these rules:
 
-1. **Human-Driven Workflow (No Autonomous AI Agents):**
+1. **Human-driven workflow (no autonomous AI agents):**
    - All issues and pull requests **must be opened, reviewed, and merged by a human contributor**, not by an autonomous AI agent or bot.
    - Do not submit unreviewed, bulk AI-generated code or documentation.
-2. **What is Allowed:**
+2. **What is allowed:**
    - You may use generative AI tools to assist with brainstorming, debugging error messages, writing boilerplate code, refactoring functions, or drafting documentation.
-3. **Mandatory Disclosure:**
+3. **Mandatory disclosure:**
    - If you use generative AI tools to substantially generate or modify code, tests, or text in a pull request, you **must disclose** this in your PR description (e.g., noting which tool was used and which files or functions were assisted by AI).
-4. **Contributor Responsibility:**
+4. **Contributor responsibility:**
    - **You are 100% responsible for every line you submit.** Before opening a PR, you must thoroughly read, understand, test, and verify all AI-assisted code to ensure it is accurate, secure, properly licensed, and adheres to our project's style and reproducibility standards.
 
----
+## Code of Conduct
+ 
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/UBC-MDS-2026-27/DSCI-522-group-16-Spam-Email-Classifier/blob/main/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## Attribution
 
