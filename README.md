@@ -1,4 +1,4 @@
-# Spam Email Classifier 
+# [Spam Email Classifier](https://ubc-mds-2026-27.github.io/DSCI-522-group-16-Spam-Email-Classifier/analysis/spam-email-classifier-report.html)
 
 ## Authors 
 Audrey Tsung, Ethan Liang, Karn Nijjar
